@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: hotel-booking
+    runtime: docker
+    plan: free                        # must be explicit; if omitted Render picks a paid plan
+    region: singapore                 # closest to India; delete this line if free isn't offered there
+    healthCheckPath: /actuator/health
+    autoDeployTrigger: commit
