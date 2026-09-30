@@ -23,7 +23,7 @@ On Linux use `date -d '+30 days' +%F` instead. The examples also use `OWNER_ID`,
 
 | # | Method | Path | What it does |
 |---|---|---|---|
-| 1.1 | GET | `/actuator/health` | Health check (used by Render) |
+| 1.1 | GET | `/actuator/health` | Health check |
 | 1.2 | GET | `/` · `/v3/api-docs` | Swagger UI · OpenAPI JSON |
 | 1.3 | POST | `/api/owners` | Create an owner account |
 | 1.4 | POST | `/api/owners/{ownerId}/properties` | Onboard a property |
@@ -300,11 +300,11 @@ Plus 3 bookings in different states: **CONFIRMED** (Sunrise Koramangala, in 14 d
 
 ```bash
 make seed                                            # local app on port 8081
-make seed BASE_URL=https://<your-app>.onrender.com   # the deployed app on Render
+make seed BASE_URL=https://hotel-booking-66so.onrender.com   # the live deployment
 ```
 
 Notes:
-- Data lives in memory, so it disappears on every restart (and each time Render's free instance wakes up) — seed again after a restart.
+- Data lives in memory, so it disappears on every restart — seed again after a restart.
 - Seeding the same running app twice adds a second copy of the data.
 - `make run-seeded` refuses to start if something is already running on the port, so it never seeds the wrong app.
 - The script needs `curl` and `jq` (both preinstalled on recent macOS; `brew install jq` otherwise).

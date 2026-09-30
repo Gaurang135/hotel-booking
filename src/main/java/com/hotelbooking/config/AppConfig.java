@@ -9,7 +9,7 @@ import java.time.ZoneId;
 @Configuration
 public class AppConfig {
 
-    // Render runs in UTC; "today" must be the Indian date
+    // servers usually run in UTC; "today" must be the Indian date
     @Bean
     public Clock clock() {
         return Clock.system(ZoneId.of("Asia/Kolkata"));

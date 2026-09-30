@@ -1,10 +1,10 @@
 # Hotel Booking System
 
 Backend for a hotel booking platform: discover properties, onboard single properties or chains, book rooms, pay, and cancel.
-Java 21 · Spring Boot 4.1.1 · Maven · in-memory storage · Swagger UI · Docker · Render.
+Java 21 · Spring Boot 4.1.1 · Maven · in-memory storage · Swagger UI · Docker.
 
 > **Live demo:** https://hotel-booking-66so.onrender.com (Swagger UI) · health: https://hotel-booking-66so.onrender.com/actuator/health
-> Free Render instances sleep after 15 min idle — the first request can take ~1 minute. Data is in memory and resets on every restart; load demo data with `make seed BASE_URL=https://hotel-booking-66so.onrender.com`.
+> Data is in memory and resets on every restart; load demo data with `make seed BASE_URL=https://hotel-booking-66so.onrender.com`.
 >
 > **Trying the API?** [DEMO.md](DEMO.md) has every endpoint with a working `curl`, how to run with demo data, and a 5-minute guided demo.
 
@@ -16,7 +16,7 @@ Requires JDK 21 (Maven is provided by the wrapper) and Docker for the image targ
 |---|---|
 | `make run` | Start the app locally → http://localhost:8081 (Swagger UI), empty |
 | `make run-seeded` | Same, and loads 14 demo entries once it's up ([details](DEMO.md#2-run-with-demo-data-make-run-seeded)) |
-| `make seed [BASE_URL=…]` | Load the demo entries into an already running app (local or Render) |
+| `make seed [BASE_URL=…]` | Load the demo entries into an already running app (local or deployed) |
 | `make test` | Run all 91 tests |
 | `make test-coverage` | Run tests with JaCoCo coverage; prints a per-package line/branch table and writes `target/site/jacoco/index.html` |
 | `make build` | Build `target/app.jar` |
@@ -30,7 +30,7 @@ Without make: `./mvnw spring-boot:run`, `./mvnw test`, `docker build -t hotel-bo
 |---|---|
 | `/` or `/swagger-ui.html` | Swagger UI |
 | `/v3/api-docs` | OpenAPI JSON |
-| `/actuator/health` | Health check (used by Render) |
+| `/actuator/health` | Health check |
 
 ## Architecture
 
@@ -91,7 +91,7 @@ Dependency rule: `api → service → repository → domain → exception`.
 
 ## Trade-offs
 
-- The lock lives in one JVM — correct for a single instance (Render free). Scaling out needs a database row lock (`SELECT … FOR UPDATE`): a new `InventoryLock` implementation plus database repositories; services don't change.
+- The lock lives in one JVM — correct for a single instance. Scaling out needs a database row lock (`SELECT … FOR UPDATE`): a new `InventoryLock` implementation plus database repositories; services don't change.
 - In-memory data is lost on restart.
 - An unpaid booking holds its room until paid, declined or cancelled (no hold expiry yet).
 - The mock gateway is called inside the lock; a real, slow gateway would need an async `PAYMENT_IN_PROGRESS` step.
@@ -99,8 +99,3 @@ Dependency rule: `api → service → repository → domain → exception`.
 ## With more time
 
 Postgres + row locks · hold expiry (15-min hold, localised to `Booking.holdsRoom()`) · multi-room bookings · webhooks for async payments · pagination and sorting in search · CI running `./mvnw test`.
-
-## Deploy to Render
-
-`render.yaml` defines a free Docker web service with `healthCheckPath: /actuator/health`.
-Push to GitHub → Render dashboard → **New → Blueprint** → select the repo → **Apply**. Render injects `PORT`; the app binds to it.
