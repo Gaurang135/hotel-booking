@@ -3,8 +3,8 @@
 Backend for a hotel booking platform: discover properties, onboard single properties or chains, book rooms, pay, and cancel.
 Java 21 · Spring Boot 4.1.1 · Maven · in-memory storage · Swagger UI · Docker · Render.
 
-> **Live demo:** not deployed yet — see [Deploy to Render](#deploy-to-render). Once live, the root URL opens Swagger UI.
-> Free Render instances sleep after 15 min idle — the first request can take ~1 minute. Data is in memory and resets on every restart; load demo data with `make seed BASE_URL=https://<your-app>.onrender.com`.
+> **Live demo:** https://hotel-booking-66so.onrender.com (Swagger UI) · health: https://hotel-booking-66so.onrender.com/actuator/health
+> Free Render instances sleep after 15 min idle — the first request can take ~1 minute. Data is in memory and resets on every restart; load demo data with `make seed BASE_URL=https://hotel-booking-66so.onrender.com`.
 >
 > **Trying the API?** [DEMO.md](DEMO.md) has every endpoint with a working `curl`, how to run with demo data, and a 5-minute guided demo.
 
